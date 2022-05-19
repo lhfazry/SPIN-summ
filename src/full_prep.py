@@ -180,7 +180,7 @@ def main():
         max_length = 16000
 
         df = spark.read.json(data_path)
-        df = df.repartition(args.partitions, "article_id")
+        #df = df.repartition(args.partitions, "article_id")
 
         b_keywords = sc.broadcast(KEYWORDS)
         df = df.withColumn(
