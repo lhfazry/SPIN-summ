@@ -176,6 +176,8 @@ def main():
         spark_types.ArrayType(spark_types.StringType()))
 
     for data_path, prefix in zip(data_paths, data_prefixes):
+        max_length = 16000
+
         df = spark.read.json(data_path) \
             .repartition(args.partitions, "article_id")
 
@@ -241,7 +243,7 @@ def main():
             "summary_len",
             F.size(F.split(F.col("summary"), " "))) \
             .where(
-            F.col('document_len') > 50) \
+            F.col('document_len') > max_length) \
             .select(
             "article_id",
             "section_id",
