@@ -150,8 +150,9 @@ def main():
     scorer = rouge_scorer.RougeScorer(metrics, use_stemmer=True)
 
     conf = pyspark.SparkConf()
-    conf.set('spark.driver.memory', args.driver_memory)
-    sc = pyspark.SparkContext(conf=conf)
+    #conf.set('spark.driver.memory', args.driver_memory)
+    #sc = pyspark.SparkContext(conf=conf)
+    sc = pyspark.SparkContext()
     spark = pyspark.sql.SparkSession(sc)
 
     data_prefixes = ['train', 'val', 'test']
@@ -178,8 +179,8 @@ def main():
     for data_path, prefix in zip(data_paths, data_prefixes):
         max_length = 16000
 
-        df = spark.read.json(data_path) \
-            .repartition(args.partitions, "article_id")
+        df = spark.read.json(data_path)
+        df = df.repartition(args.partitions, "article_id")
 
         b_keywords = sc.broadcast(KEYWORDS)
         df = df.withColumn(
