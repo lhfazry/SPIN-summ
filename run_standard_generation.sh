@@ -1,3 +1,4 @@
+#!/bin/bash
 python src/dancer_generation.py \
     --mode standard \
     --model_path google/pegasus-pubmed \

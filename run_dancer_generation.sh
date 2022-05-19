@@ -1,3 +1,4 @@
+#!/bin/bash
 python src/dancer_generation.py \
     --mode dancer \
     --model_path dancer_pubmed/models \

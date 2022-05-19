@@ -1,3 +1,4 @@
+#!/bin/bash
 python src/run_summarization.py \
     --model_name_or_path google/pegasus-pubmed --tokenizer_name google/pegasus-pubmed \
     --do_train \
