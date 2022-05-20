@@ -178,7 +178,7 @@ def main():
     for data_path, prefix in zip(data_paths, data_prefixes):
         max_length = 16000
 
-        df = spark.read.json(data_path).repartition(args.partitions, "article_id")
+        df = spark.read.json(data_path)#.repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
 
         b_keywords = sc.broadcast(KEYWORDS)
