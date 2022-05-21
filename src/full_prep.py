@@ -180,12 +180,7 @@ def main():
 
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
-        df = df.withColumn("document", F.concat_ws(" ", F.col("full_text_section").section_text)) \
-            .agg(
-            F.collect_list("summary_scores").alias("summary_scores"),
-            F.collect_list("text_section").alias("full_text_sections")) \
-            .withColumn("full_text_sections", index_array_udf("full_text_sections")) \
-            .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
+        df = df.withColumn("document_len", F.size(F.split(F.col("article_text"), " "))) \
             .where(F.col('document_len') > max_length)
 
         b_keywords = sc.broadcast(KEYWORDS)
@@ -199,9 +194,15 @@ def main():
             "summary_scores",
             rouge_match(scorer)(F.struct(F.col('text_section'), F.col('abstract_text')))) \
             .groupby(["abstract_text", "article_id"]) \
+            .agg(
+            F.collect_list("summary_scores").alias("summary_scores"),
+            F.collect_list("text_section").alias("full_text_sections")) \
             .withColumn(
             "matched_summaries",
             summary_match_udf("summary_scores")) \
+            .withColumn(
+            "full_text_sections",
+            index_array_udf("full_text_sections")) \
             .withColumn(
             "matched_summaries",
             F.arrays_zip(F.col("abstract_text"), F.col("matched_summaries"))) \
@@ -222,6 +223,9 @@ def main():
             section_identify(b_keywords)('section_head')) \
             .where(
             F.col("section_id").isin(selected_section_types)) \
+            .withColumn(
+            "document",
+            F.concat_ws(" ", F.col("full_text_section").section_text)) \
             .withColumn(
             "summary",
             F.concat_ws(" ", F.col("section_summary"))) \
