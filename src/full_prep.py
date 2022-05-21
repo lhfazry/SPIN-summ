@@ -182,8 +182,8 @@ def main():
         #df = df.repartition(args.partitions, "article_id")
         df = df \
             .withColumn('joined_text', F.array_join(F.col('article_text'), " ")) \
-            .withColumn("document_len", F.size(F.split(F.col("joined_text"), " "))) \
-            .where(F.col('document_len') > max_length)
+            .withColumn("text_len", F.size(F.split(F.col("joined_text"), " "))) \
+            .where(F.col('text_len') > max_length)
 
         b_keywords = sc.broadcast(KEYWORDS)
         df = df.withColumn(
@@ -243,6 +243,7 @@ def main():
             .withColumn(
             "summary_len",
             F.size(F.split(F.col("summary"), " "))) \
+            .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
             .where(
             F.col('document_len') > 50) \
             .select(
