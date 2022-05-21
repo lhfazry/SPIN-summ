@@ -180,7 +180,8 @@ def main():
 
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
-        df = df.withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
+        df = df.withColumn("document", F.concat_ws(" ", F.col("full_text_section").section_text)) \
+            .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
             .where(F.col('document_len') > max_length)
 
         b_keywords = sc.broadcast(KEYWORDS)
@@ -223,9 +224,6 @@ def main():
             section_identify(b_keywords)('section_head')) \
             .where(
             F.col("section_id").isin(selected_section_types)) \
-            .withColumn(
-            "document",
-            F.concat_ws(" ", F.col("full_text_section").section_text)) \
             .withColumn(
             "summary",
             F.concat_ws(" ", F.col("section_summary"))) \
