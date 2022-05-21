@@ -180,12 +180,18 @@ def main():
 
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
+
+        # filter to only contain article have lenght > 16000
         df = df \
             .withColumn('joined_text', F.array_join(F.col('article_text'), " ")) \
             .withColumn("text_len", F.size(F.split(F.col("joined_text"), " "))) \
             .where(F.col('text_len') > max_length)
 
+        print(f'Total rows: {df.count()}')
+        print(f'Columns: {df.columns}')
+
         b_keywords = sc.broadcast(KEYWORDS)
+
         df = df.withColumn(
             'zipped_text',
             F.arrays_zip(F.col('section_names'), F.col('sections'))) \
