@@ -180,7 +180,9 @@ def main():
 
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
-        df = df.withColumn("document_len", F.size(F.split(F.col("article_text"), " "))) \
+        df = df \
+            .withColumn('joined_text', F.array_join(F.col('article_text'), " ")) \
+            .withColumn("document_len", F.size(F.split(F.col("joined_text"), " "))) \
             .where(F.col('document_len') > max_length)
 
         b_keywords = sc.broadcast(KEYWORDS)
