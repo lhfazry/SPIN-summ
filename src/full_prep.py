@@ -263,6 +263,9 @@ def main():
             df = df.where(
                 F.col('summary_len') > 50)
 
+        print(f'Total rows: {df.count()}')
+        print(f'Columns: {df.columns}')
+
         df.write.json(
             path=os.path.join(task_output_dir, prefix),
             mode="overwrite")
