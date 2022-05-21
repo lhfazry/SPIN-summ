@@ -180,6 +180,8 @@ def main():
 
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
+        df = df.withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
+            .where(F.col('document_len') > max_length)
 
         b_keywords = sc.broadcast(KEYWORDS)
         df = df.withColumn(
@@ -237,13 +239,10 @@ def main():
             "abstract",
             F.regexp_replace("abstract", "<\/?S>", "")) \
             .withColumn(
-            "document_len",
-            F.size(F.split(F.col("document"), " "))) \
-            .withColumn(
             "summary_len",
             F.size(F.split(F.col("summary"), " "))) \
             .where(
-            F.col('document_len') > max_length) \
+            F.col('document_len') > 50) \
             .select(
             "article_id",
             "section_id",
