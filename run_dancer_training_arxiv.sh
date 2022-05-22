@@ -1,14 +1,14 @@
 #!/bin/bash
 python src/run_summarization.py \
-    --model_name_or_path google/pegasus-pubmed --tokenizer_name google/pegasus-pubmed \
+    --model_name_or_path google/bigbird-pegasus-large-bigpatent --tokenizer_name google/bigbird-pegasus-large-bigpatent \
     --do_train \
     --do_eval \
     --task summarization \
-    --train_file /home/jupyter/pubmed-dataset/processed/pubmed/train.json \
-    --validation_file /home/jupyter/pubmed-dataset/processed/pubmed/val.json \
+    --train_file dataset/pubmed/processed/arxiv/train.json \
+    --validation_file dataset/pubmed/processed/arxiv/val.json \
     --text_column document \
     --summary_column summary \
-    --output_dir dancer_pubmed_pre/models --logging_dir dancer_pubmed_pre/models/logs \
+    --output_dir dancer_arxiv_pre/models --logging_dir dancer_arxiv_pre/models/logs \
     --seed 100 \
     --per_device_train_batch_size=4 \
     --per_device_eval_batch_size=4 \
