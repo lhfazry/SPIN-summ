@@ -21,4 +21,4 @@ python src/run_summarization.py \
     --num_beams 3 \
     --num_train_epochs 2 --save_step 100 --save_total_limit 1 \
     --load_best_model_at_end \
-    --evaluation_strategy steps --eval_steps 10000 --metric_for_best_model rouge2 --greater_is_better true
+    --evaluation_strategy steps --eval_steps 100 --metric_for_best_model rouge2 --greater_is_better true
