@@ -4,8 +4,8 @@ python src/run_summarization.py \
     --do_train \
     --do_eval \
     --task summarization \
-    --train_file dataset/pubmed/processed/arxiv/train.json \
-    --validation_file dataset/pubmed/processed/arxiv/val.json \
+    --train_file dataset/arxiv/processed/arxiv/train.json \
+    --validation_file dataset/arxiv/processed/arxiv/val.json \
     --text_column document \
     --summary_column summary \
     --output_dir dancer_arxiv_pre/models --logging_dir dancer_arxiv_pre/models/logs \
