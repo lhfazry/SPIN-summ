@@ -14,7 +14,7 @@ python src/run_summarization.py \
     --per_device_eval_batch_size=4 \
     --overwrite_output_dir \
     --predict_with_generate \
-    --max_val_samples 300 \
+    --max_val_samples 251 \
     --learning_rate 1e-4 \
     --adafactor \
     --max_source_length 512 --max_target_length 128 --val_max_target_length 128 --pad_to_max_length \
