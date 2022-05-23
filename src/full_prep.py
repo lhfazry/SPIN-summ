@@ -131,6 +131,7 @@ def read_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_root", type=str, help="")
     parser.add_argument("--task", type=str, help="")
+    parser.add_argument("--strategy", type=str, help="")
     parser.add_argument("--driver_memory", type=str, default="16g", help="")
     parser.add_argument("--partitions", type=int, default=500, help="")
 
