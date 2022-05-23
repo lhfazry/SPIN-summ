@@ -156,7 +156,9 @@ def main():
 
     data_prefixes = ['train', 'val', 'test']
     data_paths = [train_data, val_data, test_data]
-    task_output_dir = os.path.join(args.data_root, "processed", args.task)
+
+    task_output_dir = os.path.join(args.data_root, args.strategy, args.task)
+
     if not os.path.exists(task_output_dir):
         os.makedirs(task_output_dir)
 
@@ -181,88 +183,96 @@ def main():
         df = spark.read.json(data_path).repartition(args.partitions, "article_id")
         #df = df.repartition(args.partitions, "article_id")
 
-        # filter to only contain article have lenght > 16000
-        df = df \
-            .withColumn('joined_text', F.array_join(F.col('article_text'), " ")) \
-            .withColumn("text_len", F.size(F.split(F.col("joined_text"), " "))) \
-            .where(F.col('text_len') > max_length)
+        if args.strategy == 'standard':
+            df = df \
+                .withColumn('document', F.array_join(F.col('article_text'), " ")) \
+                .withColumn('summary', F.array_join(F.col('abstract_text'), " ")) \
+                .withColumn("text_len", F.size(F.split(F.col("document"), " "))) \
+                .where(F.col('text_len') > max_length)
+                
+        elif args.strategy == 'dancer':
+            # filter to only contain article have lenght > 16000
+            df = df \
+                .withColumn('joined_text', F.array_join(F.col('article_text'), " ")) \
+                .withColumn("text_len", F.size(F.split(F.col("joined_text"), " "))) \
+                .where(F.col('text_len') > max_length)
 
-        print(f'Total rows: {df.count()}')
-        print(f'Columns: {df.columns}')
+            print(f'Total rows: {df.count()}')
+            print(f'Columns: {df.columns}')
 
-        b_keywords = sc.broadcast(KEYWORDS)
+            b_keywords = sc.broadcast(KEYWORDS)
 
-        df = df.withColumn(
-            'zipped_text',
-            F.arrays_zip(F.col('section_names'), F.col('sections'))) \
-            .withColumn(
-            "text_section",
-            F.explode("zipped_text")) \
-            .withColumn(
-            "summary_scores",
-            rouge_match(scorer)(F.struct(F.col('text_section'), F.col('abstract_text')))) \
-            .groupby(["abstract_text", "article_id"]) \
-            .agg(
-            F.collect_list("summary_scores").alias("summary_scores"),
-            F.collect_list("text_section").alias("full_text_sections")) \
-            .withColumn(
-            "matched_summaries",
-            summary_match_udf("summary_scores")) \
-            .withColumn(
-            "full_text_sections",
-            index_array_udf("full_text_sections")) \
-            .withColumn(
-            "matched_summaries",
-            F.arrays_zip(F.col("abstract_text"), F.col("matched_summaries"))) \
-            .select(
-            F.explode(F.col("full_text_sections")).alias("full_text_section"),
-            F.col("full_text_section").section_head.alias("section_head"),
-            F.col("full_text_section").section_idx.alias("section_idx"),
-            F.col("matched_summaries"),
-            "abstract_text",
-            "article_id") \
-            .withColumn(
-            "section_summary",
-            collect_summary_udf(F.struct(F.col("section_idx"), F.col("matched_summaries")))) \
-            .where(
-            F.size(F.col("section_summary")) > 0) \
-            .withColumn(
-            'section_id',
-            section_identify(b_keywords)('section_head')) \
-            .where(
-            F.col("section_id").isin(selected_section_types)) \
-            .withColumn(
-            "document",
-            F.concat_ws(" ", F.col("full_text_section").section_text)) \
-            .withColumn(
-            "summary",
-            F.concat_ws(" ", F.col("section_summary"))) \
-            .withColumn(
-            "abstract",
-            F.concat_ws(" ", F.col("abstract_text"))) \
-            .withColumn(
-            "summary",
-            F.regexp_replace("summary", "<\/?S>", "")) \
-            .withColumn(
-            "abstract",
-            F.regexp_replace("abstract", "<\/?S>", "")) \
-            .withColumn(
-            "summary_len",
-            F.size(F.split(F.col("summary"), " "))) \
-            .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
-            .where(
-            F.col('document_len') > 50) \
-            .select(
-            "article_id",
-            "section_id",
-            "document",
-            "summary",
-            "abstract")
+            df = df.withColumn(
+                'zipped_text',
+                F.arrays_zip(F.col('section_names'), F.col('sections'))) \
+                .withColumn(
+                "text_section",
+                F.explode("zipped_text")) \
+                .withColumn(
+                "summary_scores",
+                rouge_match(scorer)(F.struct(F.col('text_section'), F.col('abstract_text')))) \
+                .groupby(["abstract_text", "article_id"]) \
+                .agg(
+                F.collect_list("summary_scores").alias("summary_scores"),
+                F.collect_list("text_section").alias("full_text_sections")) \
+                .withColumn(
+                "matched_summaries",
+                summary_match_udf("summary_scores")) \
+                .withColumn(
+                "full_text_sections",
+                index_array_udf("full_text_sections")) \
+                .withColumn(
+                "matched_summaries",
+                F.arrays_zip(F.col("abstract_text"), F.col("matched_summaries"))) \
+                .select(
+                F.explode(F.col("full_text_sections")).alias("full_text_section"),
+                F.col("full_text_section").section_head.alias("section_head"),
+                F.col("full_text_section").section_idx.alias("section_idx"),
+                F.col("matched_summaries"),
+                "abstract_text",
+                "article_id") \
+                .withColumn(
+                "section_summary",
+                collect_summary_udf(F.struct(F.col("section_idx"), F.col("matched_summaries")))) \
+                .where(
+                F.size(F.col("section_summary")) > 0) \
+                .withColumn(
+                'section_id',
+                section_identify(b_keywords)('section_head')) \
+                .where(
+                F.col("section_id").isin(selected_section_types)) \
+                .withColumn(
+                "document",
+                F.concat_ws(" ", F.col("full_text_section").section_text)) \
+                .withColumn(
+                "summary",
+                F.concat_ws(" ", F.col("section_summary"))) \
+                .withColumn(
+                "abstract",
+                F.concat_ws(" ", F.col("abstract_text"))) \
+                .withColumn(
+                "summary",
+                F.regexp_replace("summary", "<\/?S>", "")) \
+                .withColumn(
+                "abstract",
+                F.regexp_replace("abstract", "<\/?S>", "")) \
+                .withColumn(
+                "summary_len",
+                F.size(F.split(F.col("summary"), " "))) \
+                .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
+                .where(
+                F.col('document_len') > 50) \
+                .select(
+                "article_id",
+                "section_id",
+                "document",
+                "summary",
+                "abstract")
 
         if prefix not in ['val', 'test']:
             df = df.where(
                 F.col('summary_len') > 50)
-
+        
         print(f'Total rows: {df.count()}')
         print(f'Columns: {df.columns}')
 
