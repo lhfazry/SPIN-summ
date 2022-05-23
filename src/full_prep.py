@@ -189,6 +189,7 @@ def main():
                 .withColumn('document', F.array_join(F.col('article_text'), " ")) \
                 .withColumn('summary', F.array_join(F.col('abstract_text'), " ")) \
                 .withColumn("text_len", F.size(F.split(F.col("document"), " "))) \
+                .withColumn("summary_len", F.size(F.split(F.col("summary"), " "))) \
                 .where(F.col('text_len') > max_length)
                 
         elif args.strategy == 'dancer':
