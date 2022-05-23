@@ -4,8 +4,8 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --do_train \
     --do_eval \
     --task summarization \
-    --train_file dataset/arxiv/standard/train.json \
-    --validation_file dataset/arxiv/standard/val.json \
+    --train_file dataset/arxiv/standard/arxiv/train.json \
+    --validation_file dataset/arxiv/standard/arxiv/val.json \
     --text_column document \
     --summary_column summary \
     --output_dir standard_arxiv_pre/models --logging_dir standard_arxiv_pre/models/logs \
