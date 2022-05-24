@@ -14,9 +14,9 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --output_dir dancer_pubmed_pre/models \
     --logging_dir dancer_pubmed_pre/models/logs \
     --seed 100 \
-    --per_device_train_batch_size=4 \
-    --per_device_eval_batch_size=4 \
-    --gradient_accumulation_steps=32 \
+    --per_device_train_batch_size=8 \
+    --per_device_eval_batch_size=8 \
+    --gradient_accumulation_steps=16 \
     --gradient_checkpointing true \
     --fp16 true \
     --overwrite_output_dir \
