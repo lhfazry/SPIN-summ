@@ -23,7 +23,7 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --val_max_target_length 128  \
     --pad_to_max_length \
     --num_beams 3 \
-    --num_train_epochs 50 \
+    --num_train_epochs 10 \
     --save_strategy epoch \
     --save_total_limit 1 \
     --load_best_model_at_end \
