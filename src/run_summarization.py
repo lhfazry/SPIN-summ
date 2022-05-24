@@ -349,6 +349,10 @@ def main():
     config.block_size = model_args.block_size, 
     config.num_random_blocks = model_args.num_random_blocks
 
+    print('------------------------------')
+    print(config)
+    print('------------------------------')
+
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
         cache_dir=model_args.cache_dir,
