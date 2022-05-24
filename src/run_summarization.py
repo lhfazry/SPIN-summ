@@ -343,7 +343,9 @@ def main():
         model_args.config_name if model_args.config_name else model_args.model_name_or_path,
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
-        use_auth_token=True if model_args.use_auth_token else None
+        use_auth_token=True if model_args.use_auth_token else None,
+        block_size=model_args.block_size, 
+        num_random_blocks=model_args.num_random_blocks
     )
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,
@@ -351,6 +353,8 @@ def main():
         use_fast=model_args.use_fast_tokenizer,
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
+        block_size=model_args.block_size, 
+        num_random_blocks=model_args.num_random_blocks
     )
     model = AutoModelForSeq2SeqLM.from_pretrained(
         model_args.model_name_or_path,
@@ -359,8 +363,6 @@ def main():
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
-        block_size=model_args.block_size, 
-        num_random_blocks=model_args.num_random_blocks
     )
 
     # Set decoder_start_token_id
