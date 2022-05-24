@@ -71,11 +71,11 @@ class ModelArguments:
     tokenizer_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained tokenizer name or path if not the same as model_name"}
     )
-    block_size: Optional[int] = field(
+    block_size: int = field(
         default=32,
         metadata={"help": "Block size."},
     )
-    num_random_blocks: Optional[int] = field(
+    num_random_blocks: int = field(
         default=2,
         metadata={"help": "Num random block."},
     )
