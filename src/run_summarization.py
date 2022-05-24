@@ -71,6 +71,14 @@ class ModelArguments:
     tokenizer_name: Optional[str] = field(
         default=None, metadata={"help": "Pretrained tokenizer name or path if not the same as model_name"}
     )
+    block_size: Optional[int] = field(
+        default=64,
+        metadata={"help": "Block size."},
+    )
+    num_random_blocks: Optional[int] = field(
+        default=3,
+        metadata={"help": "Num random block."},
+    )
     cache_dir: Optional[str] = field(
         default=None,
         metadata={"help": "Where to store the pretrained models downloaded from huggingface.co"},
@@ -336,6 +344,8 @@ def main():
         cache_dir=model_args.cache_dir,
         revision=model_args.model_revision,
         use_auth_token=True if model_args.use_auth_token else None,
+        block_size=model_args.block_size, 
+        num_random_blocks=model_args.num_random_blocks
     )
     tokenizer = AutoTokenizer.from_pretrained(
         model_args.tokenizer_name if model_args.tokenizer_name else model_args.model_name_or_path,

@@ -2,6 +2,8 @@
 CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --model_name_or_path google/bigbird-pegasus-large-bigpatent \
     --tokenizer_name google/bigbird-pegasus-large-bigpatent \
+    --block_size 32 \
+    --num_random_blocks 2 \
     --do_train \
     --do_eval \
     --task summarization \
@@ -19,7 +21,7 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --max_val_samples 35 \
     --learning_rate 1e-4 \
     --adafactor \
-    --max_source_length 500 \
+    --max_source_length 4096 \
     --max_target_length 128 \
     --val_max_target_length 128  \
     --pad_to_max_length \
