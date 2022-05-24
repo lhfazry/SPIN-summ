@@ -21,8 +21,8 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --learning_rate 1e-4 \
     --adafactor \
     --max_source_length 4096 \
-    --max_target_length 128 \
-    --val_max_target_length 128  \
+    --max_target_length 256 \
+    --val_max_target_length 256  \
     --pad_to_max_length \
     --num_beams 3 \
     --num_train_epochs 10 \

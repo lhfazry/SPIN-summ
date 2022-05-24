@@ -346,10 +346,10 @@ def main():
         use_auth_token=True if model_args.use_auth_token else None,
     )
     
-    config.block_size = model_args.block_size
-    config.num_random_blocks = model_args.num_random_blocks
-    config.decoder_attention_heads = 8
-    config.encoder_attention_heads = 8
+    #config.block_size = model_args.block_size
+    #config.num_random_blocks = model_args.num_random_blocks
+    #config.decoder_attention_heads = 8
+    #config.encoder_attention_heads = 8
 
     print('------------------------------')
     print(f'Block size: {model_args.block_size}')
