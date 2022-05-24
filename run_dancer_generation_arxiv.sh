@@ -1,5 +1,5 @@
 #!/bin/bash
-python src/dancer_generation.py \
+CUDA_VISIBLE_DEVICES=3 python src/dancer_generation.py \
     --mode dancer \
     --model_path dancer_arxiv_pre/models \
     --output_path dancer_arxiv_pre/generation \
