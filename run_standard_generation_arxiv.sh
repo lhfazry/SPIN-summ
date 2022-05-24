@@ -2,7 +2,7 @@
 CUDA_VISIBLE_DEVICES=3  python src/dancer_generation.py \
     --mode standard \
     --model_path standard_arxiv_pre/models \
-    --output_path standard_arxiv_pre/generation \
+    --output_path standard_arxiv_pre \
     --data_path dataset/arxiv/standard/arxiv/test.json \
     --text_column document \
     --summary_column summary \
