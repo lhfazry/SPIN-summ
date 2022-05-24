@@ -1,0 +1,14 @@
+ARXIV:
+dancer:
+{'eval_loss': 2.707941770553589, 'eval_rouge1': 30.3967, 'eval_rouge2': 9.7428, 'eval_rougeL': 20.5096, 'eval_rougeLsum': 25.9005, 'eval_gen_len': 120.4542, 'eval_runtime': 130.6343, 'eval_samples_per_second': 1.921, 'eval_steps_per_second': 0.245, 'epoch': 2.0, 'eval_samples': 251}
+
+
+standard:
+{'eval_loss': 2.2963507175445557, 'eval_rouge1': 39.8041, 'eval_rouge2': 13.8545, 'eval_rougeL': 26.0592, 'eval_rougeLsum': 35.3456, 'eval_gen_len': 123.6826, 'eval_runtime': 90.5817, 'eval_samples_per_second': 1.844, 'eval_steps_per_second': 0.232, 'epoch': 2.0, 'eval_samples': 167}
+
+PUBMED:
+dancer:
+{'eval_loss': 2.905242681503296, 'eval_rouge1': 26.3464, 'eval_rouge2': 7.1994, 'eval_rougeL': 18.6833, 'eval_rougeLsum': 22.9049, 'eval_gen_len': 105.2857, 'eval_runtime': 19.4331, 'eval_samples_per_second': 1.801, 'eval_steps_per_second': 0.257, 'epoch': 2.0, 'eval_samples': 35}
+
+standard:
+{'eval_loss': 2.6187100410461426, 'eval_rouge1': 25.9202, 'eval_rouge2': 8.1817, 'eval_rougeL': 20.1295, 'eval_rougeLsum': 23.5424, 'eval_gen_len': 110.1176, 'eval_runtime': 11.3133, 'eval_samples_per_second': 1.503, 'eval_steps_per_second': 0.265, 'epoch': 2.0, 'eval_samples': 17}
