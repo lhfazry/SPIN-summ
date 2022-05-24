@@ -12,8 +12,9 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --output_dir dancer_pubmed_pre/models \
     --logging_dir dancer_pubmed_pre/models/logs \
     --seed 100 \
-    --per_device_train_batch_size=8 \
-    --per_device_eval_batch_size=8 \
+    --per_device_train_batch_size=4 \
+    --per_device_eval_batch_size=4 \
+    --overwrite_output_dir \
     --predict_with_generate \
     --max_val_samples 35 \
     --learning_rate 1e-4 \
