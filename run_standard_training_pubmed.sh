@@ -12,19 +12,21 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --output_dir standard_pubmed_pre/models \
     --logging_dir standard_pubmed_pre/models/logs \
     --seed 100 \
-    --per_device_train_batch_size=8 \
-    --per_device_eval_batch_size=8 \
+    --per_device_train_batch_size=4 \
+    --per_device_eval_batch_size=4 \
+    --gradient_accumulation_steps=16 \
+    --gradient_checkpointing true \
+    --fp16 true \
     --overwrite_output_dir \
     --predict_with_generate \
-    --max_val_samples 17 \
     --learning_rate 1e-4 \
-    --adafactor \
-    --max_source_length 1024 \
-    --max_target_length 128 \
-    --val_max_target_length 128 \
+    --optim adafactor \
+    --max_source_length 4096 \
+    --max_target_length 256 \
+    --val_max_target_length 256  \
     --pad_to_max_length \
     --num_beams 3 \
-    --num_train_epochs 10 \ 
+    --num_train_epochs 2 \
     --save_strategy epoch \
     --save_total_limit 1 \
     --load_best_model_at_end \
