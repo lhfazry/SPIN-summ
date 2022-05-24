@@ -9,5 +9,6 @@ CUDA_VISIBLE_DEVICES=3  python src/dancer_generation.py \
     --write_rouge 1 \
     --seed 100 \
     --test_batch_size 8 \
-    --max_source_length 1024 --max_summary_length 256 \
+    --max_source_length 1024 \
+    --max_summary_length 256 \
     --num_beams 5
