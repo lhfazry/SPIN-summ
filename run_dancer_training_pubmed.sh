@@ -19,7 +19,7 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --max_val_samples 35 \
     --learning_rate 1e-4 \
     --adafactor \
-    --max_source_length 1024 \
+    --max_source_length 512 \
     --max_target_length 128 \
     --val_max_target_length 128  \
     --pad_to_max_length \
