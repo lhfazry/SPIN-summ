@@ -12,8 +12,8 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --output_dir standard_arxiv_pre/models \
     --logging_dir standard_arxiv_pre/models/logs \
     --seed 100 \
-    --per_device_train_batch_size=4 \
-    --per_device_eval_batch_size=4 \
+    --per_device_train_batch_size=8 \
+    --per_device_eval_batch_size=8 \
     --overwrite_output_dir \
     --predict_with_generate \
     --max_val_samples 167 \
