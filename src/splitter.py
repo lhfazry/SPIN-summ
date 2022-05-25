@@ -9,7 +9,7 @@ def splitter(n, s):
 
 def split_to_part(text, n_parts):
     pieces = text.split()
-    step = math.ceil(len(pieces) / n_parts)
+    step = round(len(pieces) / n_parts)
     return [" ".join(pieces[i:i+step]) for i in range(0, len(pieces), step)]
 
 def read_args():
@@ -65,7 +65,7 @@ def main():
                 print(f"Document len: {row['text_len']}, splitted into: {len(items)}")
                 summaries = split_to_part(summary, len(items))
                 print(f"Summary len: {row['summary_len']}, splitted into: {len(summaries)}")
-
+                
                 for idx, item in enumerate(items):
                     item['summary'] = summaries[idx]
                     item['summary_len'] = len(summaries[idx].split())

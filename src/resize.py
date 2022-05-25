@@ -4,6 +4,7 @@ import argparse
 import numpy as np
 
 import pyspark
+from pyspark.sql.functions import trim
 from pyspark.sql import functions as F
 from pyspark.sql import types as spark_types
 
@@ -45,8 +46,8 @@ def main():
         #df = df.repartition(args.partitions, "article_id")
 
         df = df \
-            .withColumn('document', F.array_join(F.col('article_text'), " ")) \
-            .withColumn('summary', F.array_join(F.col('abstract_text'), " ")) \
+            .withColumn('document', trim(F.array_join(F.col('article_text'), " "))) \
+            .withColumn('summary', trim(F.array_join(F.col('abstract_text'), " "))) \
             .withColumn("summary", F.regexp_replace("summary", "<\/?S>", "")) \
             .withColumn("text_len", F.size(F.split(F.col("document"), " "))) \
             .withColumn("summary_len", F.size(F.split(F.col("summary"), " "))) \
