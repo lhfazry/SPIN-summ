@@ -1,5 +1,5 @@
 #!/bin/bash
-CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
+CUDA_VISIBLE_DEVICES=1,3 python src/run_summarization.py \
     --model_name_or_path google/bigbird-pegasus-large-bigpatent \
     --tokenizer_name google/bigbird-pegasus-large-bigpatent \
     --do_train \
@@ -15,7 +15,7 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --per_device_train_batch_size=4 \
     --per_device_eval_batch_size=4 \
     --gradient_accumulation_steps=16 \
-    --gradient_checkpointing true \
+    --gradient_checkpointing false \
     --fp16 true \
     --overwrite_output_dir \
     --predict_with_generate \
