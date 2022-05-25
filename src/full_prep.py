@@ -190,7 +190,11 @@ def main():
                 .withColumn('summary', F.array_join(F.col('abstract_text'), " ")) \
                 .withColumn("text_len", F.size(F.split(F.col("document"), " "))) \
                 .withColumn("summary_len", F.size(F.split(F.col("summary"), " "))) \
-                .where(F.col('text_len') > max_length)
+                .where(F.col('text_len') > max_length) \
+                .select(
+                    "article_id",
+                    "document",
+                    "summary")
                 
         elif args.strategy == 'dancer':
             # filter to only contain article have lenght > 16000
