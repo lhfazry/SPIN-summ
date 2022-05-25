@@ -1,19 +1,16 @@
 import os
 import argparse
-
 import json
-import pyspark
-from pyspark.sql import functions as F
-from pyspark.sql import types as spark_types
-
-from rouge_score import rouge_scorer
+import math
 
 def splitter(n, s):
     pieces = s.split()
     return (" ".join(pieces[i:i+n]) for i in range(0, len(pieces), n))
 
 def split_to_part(text, n_parts):
-    return [text[i:i+n_parts] for i in range(0, len(text), n_parts)]
+    pieces = text.split()
+    step = math.ceil(len(pieces) / n_parts)
+    return [" ".join(pieces[i:i+step]) for i in range(0, len(pieces), step)]
 
 def read_args():
     parser = argparse.ArgumentParser()
@@ -38,38 +35,47 @@ def main():
     if not os.path.exists(task_output_dir):
         os.makedirs(task_output_dir)
 
-
     for data_path, prefix in zip(data_paths, data_prefixes):
         print(f"Splitting {prefix} on {data_path}")
         output = []
-        rows = []
 
         with open(data_path, 'r') as fp:
-            row = json.loads(fp.readline())
-            rows.append(row)
+            while (line := fp.readline()):
+                row = json.loads(line)
+                document = row['document']
+                summary = row['summary']
+                items = []
 
-        for row in rows:
-            document = row['document']
-            summary = row['summary']
+                for piece in splitter(4096, document):
+                    #piece = piece.strip()
 
-            documents = splitter(4096, document)
-            summaries = split_to_part(summary, len(documents))
+                    item = {
+                        "article_id": row['article_id'],
+                        "document": piece,
+                        #"summary": summaries[id],
+                        "text_len": len(piece.split()),
+                        #"summary_len": len(summaries[id].split())
+                    }
 
-            for id, piece in enumerate(documents):
-                item = {
-                    "article_id": row['article_id'],
-                    "document": piece,
-                    "summary": summaries[id],
-                    "text_len": len(piece.split()),
-                    "summary_len": len(summaries[id].split())
-                }
+                    items.append(item)
 
-                output.append(item)
+                print(f"Document len: {row['text_len']}, splitted into: {len(items)}")
+                print(f"Summary len: {row['summary_len']}, splitted into: {len(items)}")
+
+                summaries = split_to_part(summary, len(items))
+
+                for idx, item in enumerate(items):
+                    item['summary'] = summaries[idx]
+                    item['summary_len'] = len(summaries[idx].split())
+                    
+                output.extend(items)            
 
         fname = os.path.join(task_output_dir, f'{prefix}.json')
 
         with open(fname, 'w') as fp:
-            json.dump(output, fp, indent=2)
+            for item in output:
+                fp.write(json.dumps(item))
+                #json.dump(output, fp, indent=2)
 
         print(f"Finished writing {prefix} split to {task_output_dir}")
 
