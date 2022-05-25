@@ -45,7 +45,8 @@ def main():
         rows = []
 
         with open(data_path, 'r') as fp:
-            rows = json.load(fp)
+            row = json.loads(fp.readline())
+            rows.append(row)
 
         for row in rows:
             document = row['document']
