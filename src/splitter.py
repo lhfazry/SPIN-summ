@@ -4,6 +4,7 @@ import json
 import math
 import numpy as np
 
+from datasets import load_metric
 from rouge_score import rouge_scorer
 
 def splitter(n, s):
@@ -30,6 +31,7 @@ def main():
 
     metrics = ['rougeL']
     scorer = rouge_scorer.RougeScorer(metrics, use_stemmer=True)
+    rouge = load_metric("rouge")
 
     train_data = os.path.join(args.data_root, 'train.json')
     val_data = os.path.join(args.data_root, 'val.json')
@@ -80,6 +82,7 @@ def main():
 
                     for summary in summaries:
                         result = scorer.score(summary, item['document'])
+                        #result = rouge.compute(predictions=item['document'], references=summary)
                         #print(result)
                         
                         if result['rougeL'][1] > max_rougeL:
@@ -96,7 +99,7 @@ def main():
                     summaries.remove(max_summary)
                     #print(f'len summaries: {len(summaries)}')
                     
-                output.extend(items)            
+                output.extend(items)
 
         fname = os.path.join(task_output_dir, f'{prefix}.json')
 
@@ -106,7 +109,6 @@ def main():
                 #json.dump(output, fp, indent=2)
 
         print(f"Finished writing {prefix} split to {task_output_dir}")
-
 
 if __name__ == "__main__":
     main()
