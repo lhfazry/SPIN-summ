@@ -40,7 +40,10 @@ def main():
 
     for data_path, prefix in zip(data_paths, data_prefixes):
         output = []
-        rows = json.loads(data_path)
+        rows = []
+
+        with open(data_path, 'r') as fp:
+            rows = json.load(fp)
 
         for row in rows:
             document = row['document']
