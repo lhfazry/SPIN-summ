@@ -38,7 +38,9 @@ def main():
     if not os.path.exists(task_output_dir):
         os.makedirs(task_output_dir)
 
+
     for data_path, prefix in zip(data_paths, data_prefixes):
+        print(f"Splitting {prefix} on {data_path}")
         output = []
         rows = []
 
