@@ -271,6 +271,7 @@ def main():
         model_args, data_args, training_args = parser.parse_args_into_dataclasses()
 
     # adam-8bit
+    ''''
     decay_parameters = get_parameter_names(model, [nn.LayerNorm])
     decay_parameters = [name for name in decay_parameters if "bias" not in name]
     optimizer_grouped_parameters = [
@@ -295,6 +296,7 @@ def main():
         eps=training_args.adam_epsilon,
         lr=training_args.learning_rate,
     )
+    '''
 
     # Detecting last checkpoint.
     last_checkpoint = None
