@@ -49,14 +49,15 @@ def main():
             .withColumn('document', trim(F.array_join(F.col('article_text'), " "))) \
             .withColumn('summary', trim(F.array_join(F.col('abstract_text'), " "))) \
             .withColumn("summary", F.regexp_replace("summary", "<\/?S>", "")) \
-            .withColumn("text_len", F.size(F.split(F.col("document"), " "))) \
+            .withColumn("document_len", F.size(F.split(F.col("document"), " "))) \
             .withColumn("summary_len", F.size(F.split(F.col("summary"), " "))) \
-            .where(F.col('text_len') > max_length) \
+            .where(F.col('document_len') > max_length) \
+            .where(F.col('summary_len') > 50) \
             .select(
                 "article_id",
                 "document",
                 "summary",
-                "text_len",
+                "document_len",
                 "summary_len")
         
         print(f'Total rows: {df.count()}')
@@ -67,7 +68,6 @@ def main():
             mode="overwrite")
 
         print(f"Finished writing {prefix} split to {task_output_dir}")
-
 
 if __name__ == "__main__":
     main()

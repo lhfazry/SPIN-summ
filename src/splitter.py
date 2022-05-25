@@ -56,16 +56,16 @@ def main():
                         "article_id": row['article_id'],
                         "document": piece,
                         #"summary": summaries[id],
-                        "text_len": len(piece.split()),
+                        "document_len": len(piece.split()),
                         #"summary_len": len(summaries[id].split())
                     }
 
                     items.append(item)
 
-                print(f"Document len: {row['text_len']}, splitted into: {len(items)}")
+                print(f"Document len: {row['document_len']}, splitted into: {len(items)}")
                 summaries = split_to_part(summary, len(items))
                 print(f"Summary len: {row['summary_len']}, splitted into: {len(summaries)}")
-                
+
                 for idx, item in enumerate(items):
                     item['summary'] = summaries[idx]
                     item['summary_len'] = len(summaries[idx].split())
