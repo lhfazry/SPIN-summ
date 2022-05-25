@@ -2,6 +2,9 @@ import os
 import argparse
 import json
 import math
+import numpy as np
+
+from rouge_score import rouge_scorer
 
 def splitter(n, s):
     pieces = s.split()
@@ -24,6 +27,9 @@ def read_args():
 
 def main():
     args, unknown = read_args()
+
+    metrics = ['rougeL']
+    scorer = rouge_scorer.RougeScorer(metrics, use_stemmer=True)
 
     train_data = os.path.join(args.data_root, 'train.json')
     val_data = os.path.join(args.data_root, 'val.json')
@@ -67,10 +73,28 @@ def main():
                 print(f"Document len: {row['document_len']}, splitted into: {len(items)}")
                 summaries = split_to_part(summary, len(items))
                 print(f"Summary len: {row['summary_len']}, splitted into: {len(summaries)}")
-
+                
                 for idx, item in enumerate(items):
-                    item['summary'] = summaries[idx]
-                    item['summary_len'] = len(summaries[idx].split())
+                    max_rougeL = 0
+                    max_summary = None
+
+                    for summary in summaries:
+                        result = scorer.score(summary, item['document'])
+                        #print(result)
+                        
+                        if result['rougeL'][1] > max_rougeL:
+                            max_rougeL = result['rougeL'][1]
+                            max_summary = summary
+
+                    if max_summary is None:
+                        max_summary = summaries[np.random.randint(0, len(summaries))]
+
+                    item['summary'] = max_summary
+                    item['summary_len'] = len(max_summary.split())
+
+                    #print(f'removing summary: {max_summary}')
+                    summaries.remove(max_summary)
+                    #print(f'len summaries: {len(summaries)}')
                     
                 output.extend(items)            
 
@@ -78,7 +102,7 @@ def main():
 
         with open(fname, 'w') as fp:
             for item in output:
-                fp.write(json.dumps(item))
+                fp.write(json.dumps(item) + '\n')
                 #json.dump(output, fp, indent=2)
 
         print(f"Finished writing {prefix} split to {task_output_dir}")
