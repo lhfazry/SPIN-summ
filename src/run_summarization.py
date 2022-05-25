@@ -620,8 +620,8 @@ def main():
         tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics if training_args.predict_with_generate else None,
-        callbacks=[es_callback],
-        optimizers=(adam_bnb_optim, None)
+        callbacks=[es_callback]
+        #optimizers=(adam_bnb_optim, None)
     )
     
     # Training
