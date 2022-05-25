@@ -38,9 +38,12 @@ def main():
     for data_path, prefix in zip(data_paths, data_prefixes):
         print(f"Splitting {prefix} on {data_path}")
         output = []
+        count = 0
 
         with open(data_path, 'r') as fp:
             while (line := fp.readline()):
+                count += 1
+                print(f'Processing row: {count}')
                 row = json.loads(line)
                 document = row['document']
                 summary = row['summary']
