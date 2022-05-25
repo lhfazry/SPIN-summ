@@ -9,8 +9,10 @@ def splitter(n, s):
 
 def split_to_part(text, n_parts):
     pieces = text.split()
-    step = round(len(pieces) / n_parts)
-    return [" ".join(pieces[i:i+step]) for i in range(0, len(pieces), step)]
+    len_pieces = len(pieces)
+    step = math.ceil(len_pieces / n_parts)
+    rest = step * n_parts - len_pieces
+    return [" ".join(pieces[i:i+step]) for i in range(0, len(pieces) + rest, step)]
 
 def read_args():
     parser = argparse.ArgumentParser()
