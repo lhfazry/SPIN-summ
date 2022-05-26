@@ -38,7 +38,7 @@ def main():
 
     if args.dataset == 'bigpatent':
         for prefix in data_prefixes:
-            df = spark.read.json(os.path.join(args.data_root, prefix, '*', '*.gz'))#.repartition(args.partitions, "article_id")
+            df = spark.read.json(os.path.join(args.data_root, 'source', prefix, '*', '*.gz'))#.repartition(args.partitions, "article_id")
 
             df = df \
                 .withColumn("document_len", F.size(F.split(F.col("description"), " "))) \
