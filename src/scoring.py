@@ -50,6 +50,33 @@ def score_dancer(
 
     return metrics
 
+def score_dancer2(
+        gen_sums,
+        target_sums,
+        article_ids,
+        out_path,
+        select_sections=None,
+        write_gens=False):
+    """Assemble and score DANCER summaries"""
+    df = pd.DataFrame(
+            list(zip(article_ids, target_sums, gen_sums)),
+            columns=["article_id", "target_sum", "gen_sum"])
+    
+    if select_sections is not None:
+        df = df[df["section_id"].isin(select_sections)]
+    
+    df = df.groupby(["article_id"]) \
+        .agg({"gen_sum": ' '.join}) \
+        .reset_index()
+
+    metrics = None
+    if write_gens:
+        write_gen(df, out_path)
+    else:
+        metrics = score_generations(df)
+
+    return metrics
+
 
 def score_standard(
         gen_sums,
