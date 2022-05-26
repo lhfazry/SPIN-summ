@@ -5,12 +5,12 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --do_train \
     --do_eval \
     --task summarization \
-    --train_file dataset/arxiv/dancer/train.json \
-    --validation_file dataset/arxiv/dancer/val.json \
+    --train_file dataset/bigpatent/train.json \
+    --validation_file dataset/bigpatent/val.json \
     --text_column document \
     --summary_column summary \
-    --output_dir dancer_arxiv_pre/models \
-    --logging_dir dancer_arxiv_pre/models/logs \
+    --output_dir standard_bigpatent_pre/models \
+    --logging_dir standard_bigpatent_pre/models/logs \
     --seed 100 \
     --per_device_train_batch_size=4 \
     --per_device_eval_batch_size=4 \

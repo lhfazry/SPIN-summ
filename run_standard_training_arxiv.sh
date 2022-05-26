@@ -1,7 +1,7 @@
 #!/bin/bash
 CUDA_VISIBLE_DEVICES=1 python src/run_summarization.py \
-    --model_name_or_path google/bigbird-pegasus-large-bigpatent \
-    --tokenizer_name google/bigbird-pegasus-large-bigpatent \
+    --model_name_or_path google/bigbird-pegasus-large-pubmed \
+    --tokenizer_name google/bigbird-pegasus-large-pubmed \
     --do_train \
     --do_eval \
     --task summarization \
