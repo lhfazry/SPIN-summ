@@ -46,9 +46,9 @@ def main():
                 .where(F.col('document_len') > max_length) \
                 .where(F.col('summary_len') > 50) \
                 .select(
-                    df.publication_number.alias["article_id"],
-                    df.description.alias["document"],
-                    df.abstract.alias["summary"],
+                    df.publication_number.alias("article_id"),
+                    df.description.alias("document"),
+                    df.abstract.alias("summary"),
                     "document_len",
                     "summary_len")
             
