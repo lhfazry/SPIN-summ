@@ -30,6 +30,7 @@ CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --save_strategy epoch \
     --save_total_limit 1 \
     --load_best_model_at_end \
-    --evaluation_strategy epoch \
+    --evaluation_strategy steps  \
+    --eval_steps 50 \
     --metric_for_best_model rouge2 \
     --greater_is_better true
