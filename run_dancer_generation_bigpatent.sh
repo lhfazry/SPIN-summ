@@ -1,5 +1,5 @@
 #!/bin/bash
-CUDA_VISIBLE_DEVICES=3 python src/dancer_generation.py \
+CUDA_VISIBLE_DEVICES=3 python src/dancer_generation2.py \
     --mode dancer \
     --model_path dancer_bigpatent_pre/models \
     --output_path dancer_bigpatent_pre \
@@ -10,4 +10,5 @@ CUDA_VISIBLE_DEVICES=3 python src/dancer_generation.py \
     --seed 100 \
     --test_batch_size 8 \
     --max_summary_length 128 \
+    --max_source_length 4096 \
     --num_beams 5
