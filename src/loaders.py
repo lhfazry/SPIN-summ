@@ -21,7 +21,7 @@ def init_loader(args):
     params = {
         'batch_size': args.test_batch_size,
         'shuffle': False,
-        'collate_fn': lambda x: x
+        #'collate_fn': lambda x: x
     }
 
     test_loader = torch.utils.data.DataLoader(test_dataset, **params)
