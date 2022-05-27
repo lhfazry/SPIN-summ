@@ -20,7 +20,7 @@ def show_stat(path):
     data.append(pd.read_json(val_data, lines=True), ignore_index=True)
     data.append(pd.read_json(test_data, lines=True), ignore_index=True)
 
-    data.describe()
+    data.head()
 
 def main():
     args, unknown = read_args()
