@@ -53,20 +53,19 @@ def score_dancer(
 def score_dancer2(
         gen_sums,
         target_sums,
-        abstracts,
         article_ids,
         out_path,
         select_sections=None,
         write_gens=False):
     """Assemble and score DANCER summaries"""
     df = pd.DataFrame(
-            list(zip(article_ids, abstracts, target_sums, gen_sums)),
-            columns=["article_id", "abstracts", "target_sum", "gen_sum"])
+            list(zip(article_ids, target_sums, gen_sums)),
+            columns=["article_id", "target_sum", "gen_sum"])
     
     #if select_sections is not None:
     #    df = df[df["section_id"].isin(select_sections)]
     
-    df = df.groupby(["article_id", "abstracts"]) \
+    df = df.groupby(["article_id", "target_sum"]) \
         .agg({"gen_sum": ' '.join}) \
         .reset_index()
     print(df.head())

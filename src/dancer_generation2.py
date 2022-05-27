@@ -106,8 +106,7 @@ def main():
     if args.mode == "dancer":
         metrics = scoring.score_dancer2(
             gen_sums=gen_sums,
-            target_sums=target_sums,
-            abstracts=abstracts,
+            target_sums=abstracts,
             article_ids=article_ids,
             out_path=out_path,
             select_sections=select_sections,
