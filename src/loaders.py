@@ -14,13 +14,16 @@ def init_loader(args):
         datasets = load_dataset(extension, data_files=data_files)
 
     test_dataset = datasets["test"]
+
     if args.max_test_samples is not None:
         test_dataset = test_dataset.select(range(args.max_test_samples))
     
     params = {
         'batch_size': args.test_batch_size,
         'shuffle': False,
+        'collate_fn': lambda x: x
     }
+
     test_loader = torch.utils.data.DataLoader(test_dataset, **params)
     
     return test_loader

@@ -18,6 +18,7 @@ def generate_summaries(test_loader, args, device):
     article_ids = []
     section_ids = []
     abstracts = []
+
     for i, batch in enumerate(tqdm(test_loader)):
         model_inputs = tokenizer(
             batch[args.text_column],
@@ -89,9 +90,11 @@ def main():
     write_rouge = bool(args.write_rouge)
 
     select_sections = ["i", "m", "r", "c"]
+    
     print(f"Mode: {args.mode}")
     if not os.path.exists(args.output_path):
         os.mkdir(args.output_path)
+
     out_path = os.path.join(args.output_path, "generations")
     test_loader = loaders.init_loader(args)
     gen_sums, target_sums, article_ids = generate_summaries(test_loader, args, device=device)
