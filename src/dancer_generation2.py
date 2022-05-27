@@ -19,8 +19,8 @@ def generate_summaries(test_loader, args, device):
     section_ids = []
     abstracts = []
 
-    dataiter = iter(test_loader)
-    data = dataiter.next()
+    #dataiter = iter(test_loader)
+    #data = dataiter.next()
 
     for i, batch in enumerate(tqdm(test_loader)):
         model_inputs = tokenizer(
@@ -47,12 +47,12 @@ def generate_summaries(test_loader, args, device):
         try:
             article_ids += batch["article_id"]
             #section_ids += batch["section_id"]
-            #abstracts += batch["abstract"]
+            abstracts += batch["abstract"]
         except KeyError:
             article_ids += [i]
             pass
         
-    return gen_sums, target_sums, article_ids
+    return gen_sums, target_sums, abstracts, article_ids
 
 
 def read_args():
@@ -100,13 +100,14 @@ def main():
 
     out_path = os.path.join(args.output_path, "generations")
     test_loader = loaders.init_loader(args)
-    gen_sums, target_sums, article_ids = generate_summaries(test_loader, args, device=device)
+    gen_sums, target_sums, abstracts, article_ids = generate_summaries(test_loader, args, device=device)
     
     print("Scoring generated summaries")
     if args.mode == "dancer":
         metrics = scoring.score_dancer2(
             gen_sums=gen_sums,
             target_sums=target_sums,
+            abstracts=abstracts,
             article_ids=article_ids,
             out_path=out_path,
             select_sections=select_sections,
