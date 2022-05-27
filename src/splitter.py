@@ -16,7 +16,7 @@ def split_to_part(text, n_parts):
     len_pieces = len(pieces)
     step = math.ceil(len_pieces / n_parts)
     rest = step * n_parts - len_pieces
-    return [" ".join(pieces[i:i+step]) for i in range(0, len(pieces) + rest, step)]
+    return [" ".join(pieces[i:i+step]) for i in range(0, len_pieces + rest, step)]
 
 def read_args():
     parser = argparse.ArgumentParser()
