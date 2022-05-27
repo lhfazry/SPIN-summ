@@ -65,6 +65,7 @@ def main():
                     item = {
                         "article_id": row['article_id'],
                         "document": piece,
+                        "abstract": summary,
                         #"summary": summaries[id],
                         "document_len": len(piece.split()),
                         #"summary_len": len(summaries[id].split())
