@@ -16,11 +16,11 @@ def show_stat(path):
     test_data = os.path.join(path, 'test.json')
 
     data = pd.DataFrame()
-    data.append(pd.read_json(train_data, lines=True), ignore_index=True)
-    data.append(pd.read_json(val_data, lines=True), ignore_index=True)
-    data.append(pd.read_json(test_data, lines=True), ignore_index=True)
+    data = data.append(pd.read_json(train_data, lines=True), ignore_index=True)
+    data = data.append(pd.read_json(val_data, lines=True), ignore_index=True)
+    data = data.append(pd.read_json(test_data, lines=True), ignore_index=True)
 
-    data.head()
+    data.describe()
 
 def main():
     args, unknown = read_args()
