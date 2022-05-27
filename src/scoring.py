@@ -65,10 +65,11 @@ def score_dancer2(
     if select_sections is not None:
         df = df[df["section_id"].isin(select_sections)]
     
-    df = df.groupby(["article_id"]) \
+    df = df.groupby(["article_id", "target_sum"]) \
         .agg({"gen_sum": ' '.join}) \
         .reset_index()
-
+    df.head()
+    
     metrics = None
     if write_gens:
         write_gen(df, out_path)
