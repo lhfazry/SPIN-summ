@@ -69,7 +69,7 @@ def score_dancer2(
     df = df.groupby(["article_id", "abstracts"]) \
         .agg({"gen_sum": ' '.join}) \
         .reset_index()
-    df.head()
+    print(df.head())
     
     metrics = None
     if write_gens:
