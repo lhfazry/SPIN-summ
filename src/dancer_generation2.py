@@ -22,7 +22,7 @@ def generate_summaries(test_loader, args, device):
     dataiter = iter(test_loader)
     data = dataiter.next()
 
-    for i, batch in enumerate(tqdm(data)):
+    for i, batch in enumerate(tqdm(test_loader)):
         model_inputs = tokenizer(
             batch[args.text_column],
             max_length=args.max_source_length,
