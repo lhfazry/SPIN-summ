@@ -19,7 +19,10 @@ def generate_summaries(test_loader, args, device):
     section_ids = []
     abstracts = []
 
-    for i, batch in enumerate(tqdm(test_loader)):
+    dataiter = iter(test_loader)
+    data = dataiter.next()
+
+    for i, batch in enumerate(tqdm(data)):
         model_inputs = tokenizer(
             batch[args.text_column],
             max_length=args.max_source_length,
@@ -90,7 +93,7 @@ def main():
     write_rouge = bool(args.write_rouge)
 
     select_sections = ["i", "m", "r", "c"]
-    
+
     print(f"Mode: {args.mode}")
     if not os.path.exists(args.output_path):
         os.mkdir(args.output_path)
