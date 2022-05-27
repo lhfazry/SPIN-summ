@@ -63,8 +63,8 @@ def score_dancer2(
             list(zip(article_ids, abstracts, target_sums, gen_sums)),
             columns=["article_id", "abstracts", "target_sum", "gen_sum"])
     
-    if select_sections is not None:
-        df = df[df["section_id"].isin(select_sections)]
+    #if select_sections is not None:
+    #    df = df[df["section_id"].isin(select_sections)]
     
     df = df.groupby(["article_id", "abstracts"]) \
         .agg({"gen_sum": ' '.join}) \
