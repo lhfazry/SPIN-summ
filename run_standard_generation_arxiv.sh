@@ -1,9 +1,9 @@
 #!/bin/bash
 CUDA_VISIBLE_DEVICES=3  python src/dancer_generation2.py \
     --mode standard \
-    --model_path standard_bigpatent_pre/models \
-    --output_path standard_bigpatent_pre \
-    --data_path dataset/bigpatent/test.json \
+    --model_path standard_arxiv_pre/models \
+    --output_path standard_arxiv_pre \
+    --data_path dataset/arxiv/test.json \
     --text_column document \
     --summary_column summary \
     --write_rouge 1 \
