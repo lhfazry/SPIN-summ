@@ -21,7 +21,12 @@ def show_stat(path):
     data = data.append(pd.read_json(test_data, lines=True), ignore_index=True)
 
     print(data.describe())
-    print(data[data['summary_len'] < 10])
+    print('Jumlah =0 ==>' + data[data['summary_len'] == 0].count())
+    print('Jumlah <10 ==>' + data[data['summary_len'] < 10].count())
+    print('Jumlah <20 ==>' + data[data['summary_len'] < 20].count())
+    print('Jumlah <40 ==>' + data[data['summary_len'] < 40].count())
+    print('Jumlah <50 ==>' + data[data['summary_len'] < 50].count())
+    print('Jumlah <60 ==>' + data[data['summary_len'] < 60].count())
 
 def main():
     args, unknown = read_args()
