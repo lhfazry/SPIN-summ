@@ -1,0 +1,1 @@
+{ ./scripts/run_spin_training_arxiv_sc3.sh > logs/run_spin_training_arxiv_sc3.log 2>&1; ./scripts/run_spin_training_bigpatent_sc3.sh > logs/run_spin_training_bigpatent_sc3.log 2>&1; } &

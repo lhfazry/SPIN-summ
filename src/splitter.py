@@ -21,6 +21,7 @@ def split_to_part(text, n_parts):
 def read_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_root", type=str, help="")
+    parser.add_argument("--scenario", type=str, help="")
 
     args, unknown = parser.parse_known_args()
     return args, unknown
@@ -40,7 +41,7 @@ def main():
     data_prefixes = ['train', 'val', 'test']
     data_paths = [train_data, val_data, test_data]
 
-    task_output_dir = os.path.join(args.data_root, 'dancer')
+    task_output_dir = os.path.join(args.data_root, 'spin', args.scenario)
 
     if not os.path.exists(task_output_dir):
         os.makedirs(task_output_dir)
@@ -86,8 +87,15 @@ def main():
                         #result = rouge.compute(predictions=item['document'], references=summary)
                         #print(result)
                         
-                        if result['rougeL'][1] > max_rougeL:
-                            max_rougeL = result['rougeL'][1]
+                        metric_index = 0
+
+                        if args.scenario == 1:
+                            metric_index = 1
+                        elif args.scenario == 2:
+                            metric_index = 0
+
+                        if result['rougeL'][metric_index] > max_rougeL:
+                            max_rougeL = result['rougeL'][metric_index]
                             max_summary = summary
 
                     if max_summary is None:
