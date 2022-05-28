@@ -6,7 +6,7 @@ CUDA_VISIBLE_DEVICES=1 python src/dancer_generation2.py \
     --data_path dataset/bigpatent/dancer/test.json \
     --text_column document \
     --summary_column summary \
-    --write_rouge 1 \
+    --write_rouge 0 \
     --seed 100 \
     --test_batch_size 4 \
     --max_summary_length 128 \
