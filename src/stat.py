@@ -21,7 +21,7 @@ def show_stat(path):
     data = data.append(pd.read_json(test_data, lines=True), ignore_index=True)
 
     print(data.describe())
-    print(data[data['len_summary'] == 0])
+    print(data[data['summary_len'] == 0])
 
 def main():
     args, unknown = read_args()
