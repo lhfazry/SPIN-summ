@@ -1,5 +1,5 @@
 #!/bin/bash
-CUDA_VISIBLE_DEVICES=1 python src/run_summarization.py \
+CUDA_VISIBLE_DEVICES=3 python src/run_summarization.py \
     --model_name_or_path google/bigbird-pegasus-large-pubmed \
     --tokenizer_name google/bigbird-pegasus-large-pubmed \
     --do_train \
