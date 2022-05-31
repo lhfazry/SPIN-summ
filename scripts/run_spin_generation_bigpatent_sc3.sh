@@ -3,7 +3,7 @@ CUDA_VISIBLE_DEVICES=1 python src/dancer_generation2.py \
     --mode dancer \
     --model_path spin_bigpatent/sc3/models \
     --output_path spin_bigpatent/sc3 \
-    --data_path dataset/arxiv/dancer/test.json \
+    --data_path dataset/bigpatent/dancer/test.json \
     --text_column document \
     --summary_column abstract \
     --write_rouge 0 \
