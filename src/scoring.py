@@ -114,10 +114,14 @@ def score_spin(
         
         df = pd.concat([df.drop(['rouge'], axis=1), df['rouge'].apply(pd.Series)], axis=1)
         
-        print("\nBefore agg:")
+        print("\nBefore groupby:")
         print(df.columns)
         
-        #df = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])[df['rougeLsum'] == df['rougeLsum'].max()]
+        df2 = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])
+        print("\nBefore agg:")
+        print(df2.columns)
+
+        #[df['rougeLsum'] == df['rougeLsum'].max()]
                 
         metrics = df[["rouge1", "rouge2", "rougeLsum"]].agg(['mean', 'std'])
 
