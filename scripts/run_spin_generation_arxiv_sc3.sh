@@ -1,5 +1,5 @@
 #!/bin/bash
-CUDA_VISIBLE_DEVICES=3 python src/spin_generation.py \
+CUDA_VISIBLE_DEVICES=1 python src/spin_generation.py \
     --mode spin \
     --model_path spin_arxiv/sc3/models \
     --output_path spin_arxiv/sc3 \
