@@ -101,10 +101,23 @@ def score_spin(
         #metrics = score_generations(df)
         rouge = load_metric("rouge")
     
+        print("\nBefore compute rouge:")
+        print(df.columns)
         df["rouge"] = df[["gen_sum", "target_sum"]].apply(lambda x: rouge.compute(predictions=[x[0]], references=[x[1]]), axis=1)
+        
+        print("\nBefore scale rouge:")
+        print(df.columns)
         df["rouge"] = df["rouge"].apply(lambda x: {k: round(v.mid.fmeasure * 100, 4) for k, v in x.items()})
+        
+        print("\nBefore concat:")
+        print(df.columns)
+        
         df = pd.concat([df.drop(['rouge'], axis=1), df['rouge'].apply(pd.Series)], axis=1)
-        df = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])[df['rougeLsum'] == df['rougeLsum'].max()]
+        
+        print("\nBefore agg:")
+        print(df.columns)
+        
+        #df = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])[df['rougeLsum'] == df['rougeLsum'].max()]
                 
         metrics = df[["rouge1", "rouge2", "rougeLsum"]].agg(['mean', 'std'])
 
