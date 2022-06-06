@@ -117,9 +117,10 @@ def score_spin(
         print("\nBefore groupby:")
         print(df.columns)
         
-        df2 = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])
+        df = df.sort_values('rougeLsum', ascending=False).drop_duplicates(['article_id'])
+        #df2 = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])
         print("\nBefore agg:")
-        print(df2.columns)
+        print(df.columns)  
 
         #[df['rougeLsum'] == df['rougeLsum'].max()]
                 
