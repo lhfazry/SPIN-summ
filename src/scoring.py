@@ -78,6 +78,37 @@ def score_dancer2(
 
     return metrics
 
+def score_spin(
+        gen_sums,
+        target_sums,
+        article_ids,
+        out_path,
+        write_gens=False):
+    """Assemble and score DANCER summaries"""
+    df = pd.DataFrame(
+            list(zip(article_ids, target_sums, gen_sums)),
+            columns=["article_id", "target_sum", "gen_sum"])
+    
+    #df = df.groupby(["article_id", "target_sum"]) \
+    #    .agg({"gen_sum": ' '.join}) \
+    #    .reset_index()
+    
+    metrics = None
+
+    if write_gens:
+        write_gen(df, out_path)
+    else:
+        #metrics = score_generations(df)
+        rouge = load_metric("rouge")
+    
+        df["rouge"] = df[["gen_sum", "target_sum"]].apply(lambda x: rouge.compute(predictions=[x[0]], references=[x[1]]), axis=1)
+        df["rouge"] = df["rouge"].apply(lambda x: {k: round(v.mid.fmeasure * 100, 4) for k, v in x.items()})
+        df = pd.concat([df.drop(['rouge'], axis=1), df['rouge'].apply(pd.Series)], axis=1)
+        df = df.groupby(["article_id", "rouge1", "rouge2", "rougeLsum"])[df['rougeLsum'] == df['rougeLsum'].max()]
+                
+        metrics = df[["rouge1", "rouge2", "rougeLsum"]].agg(['mean', 'std'])
+
+    return metrics
 
 def score_standard(
         gen_sums,

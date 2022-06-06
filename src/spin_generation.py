@@ -111,6 +111,13 @@ def main():
             out_path=out_path,
             select_sections=select_sections,
             write_gens=write_rouge)
+    elif args.mode == 'spin':
+        metrics = scoring.score_spin(
+            gen_sums=gen_sums,
+            target_sums=abstracts,
+            article_ids=article_ids,
+            out_path=out_path,
+            write_gens=write_rouge)
     else:
         metrics = scoring.score_standard(
             gen_sums=gen_sums,
